@@ -64,9 +64,15 @@ label.lf{font-size:13px;font-weight:600;color:var(--n);display:block;margin-bott
 @media(max-width:900px){.hgrid{grid-template-columns:1fr}}
 
 /* PRODUCT DETAIL SECTIONS */
-.pd-sec{background:var(--w)}
+.pd-sec{background:var(--w);display:none}
+.pd-sec.pd-active{display:block}
 .pd-sec .c::after{content:"";display:table;clear:both}
-.pd-sec:nth-of-type(even){background:var(--c)}
+.pd-tabbar{background:var(--n);padding:0;position:sticky;top:64px;z-index:140}
+.pd-tabbar-inner{max-width:1200px;margin:0 auto;display:flex;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.pd-tabbar-inner::-webkit-scrollbar{display:none}
+.pd-tab{flex-shrink:0;padding:14px 20px;font-size:13px;font-weight:600;color:rgba(255,255,255,.6);background:none;border:none;border-bottom:3px solid transparent;cursor:pointer;white-space:nowrap;font-family:var(--f);transition:.2s}
+.pd-tab:hover{color:#fff}
+.pd-tab.pd-tab-on{color:#fff;border-bottom-color:var(--g)}
 .pd-img{width:260px;border-radius:18px;object-fit:cover;box-shadow:0 14px 34px rgba(10,46,69,.18)}
 @media(max-width:768px){.pd-img{width:100%;max-height:220px;margin-top:16px}}
 .pd-hero{display:grid;grid-template-columns:1fr auto;gap:20px;align-items:flex-end;margin-bottom:8px}
@@ -577,9 +583,26 @@ footer a:hover{color:var(--g)}
 </div>
 </section>
 
+<!-- ── PRODUCT TAB BAR ─────────────────────────────────── -->
+<div class="pd-tabbar" id="pdTabbar">
+  <div class="pd-tabbar-inner">
+    <button class="pd-tab pd-tab-on" onclick="showPd('ghp',this)">🏥 GHP เหมาจ่าย</button>
+    <button class="pd-tab" onclick="showPd('medicalfund',this)">🌟 Super Good</button>
+    <button class="pd-tab" onclick="showPd('earlyci',this)">❤️ โรคร้ายแรง</button>
+    <button class="pd-tab" onclick="showPd('cancercare',this)">🎗️ มะเร็ง</button>
+    <button class="pd-tab" onclick="showPd('accident',this)">⚡ อุบัติเหตุ</button>
+    <button class="pd-tab" onclick="showPd('endowment',this)">💰 สะสมทรัพย์</button>
+    <button class="pd-tab" onclick="showPd('kidssaving',this)">👶 ออมให้ลูก</button>
+    <button class="pd-tab" onclick="showPd('beyond',this)">💎 Beyond</button>
+    <button class="pd-tab" onclick="showPd('taxpersonal',this)">📋 ภาษีบุคคล</button>
+    <button class="pd-tab" onclick="showPd('ctb',this)">🏦 CTB</button>
+    <button class="pd-tab" onclick="showPd('grouplife',this)">🏢 ประกันกลุ่ม</button>
+  </div>
+</div>
+
 <!-- ── PRODUCT DETAILS ────────────────────────────────── -->
 
-<section id="ghp" class="pd-sec">
+<section id="ghp" class="pd-sec pd-active">
 <div class="c">
   <div class="sec-backdrop" style="background-image:url('images/product-ghp.jpg')">
     <p class="lbl">ประกันสุขภาพเหมาจ่าย</p><h2 class="st">Tokio Good Health PRIME — เหมาจ่าย ครบ จ่ายตรง ไม่ต้องสำรองจ่าย</h2>
@@ -1867,6 +1890,13 @@ function submitGroup(){
   fetch(GS_URL,{method:'POST',body:JSON.stringify(d)})
     .then(()=>{B('grpMsg').textContent='✅ ส่งข้อมูลเรียบร้อยแล้ว! อาจารย์บอมจะติดต่อกลับภายใน 24 ชั่วโมงครับ';B('grp_co').value='';B('grp_name').value='';B('grp_phone').value='';document.querySelectorAll('.grpchk input').forEach(i=>i.checked=false);B('grp_pdpa').checked=false;})
     .catch(()=>{B('grpMsg').textContent='❌ เกิดข้อผิดพลาด กรุณาติดต่อผ่าน LINE: bombe2548';});
+}
+function showPd(id,btn){
+  document.querySelectorAll('.pd-sec').forEach(s=>s.classList.remove('pd-active'));
+  document.querySelectorAll('.pd-tab').forEach(t=>t.classList.remove('pd-tab-on'));
+  document.getElementById(id).classList.add('pd-active');
+  btn.classList.add('pd-tab-on');
+  document.getElementById('pdTabbar').scrollIntoView({behavior:'smooth',block:'nearest'});
 }
 </script>
 </body>
